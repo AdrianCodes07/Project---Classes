@@ -7,7 +7,7 @@ class Karaktar:
     def attack(self, annan_karaktär):
         print(f"{self.namn} attackerar {annan_karaktär.namn}!")
         annan_karaktär.hälsa -= self.kraft
-        print(f"{annan_karaktär.namn} förlorar {self.kraft} HP och har nu {annan_karaktär.hälsa} HP kvar.")
+        print(f"{annan_karaktär.namn} förlorade {self.kraft} HP och har nu {annan_karaktär.hälsa} HP kvar.")
 
 
 class Ranger (Karaktar):
