@@ -26,7 +26,6 @@ class Warrior (Karaktar):
           super().__init__(namn, hälsa=120, kraft=15)
     def attack(self, annan_karaktär):
          skada = self.kraft + 5 
-         print(f"{self.namn} svingar sitt svärd mot ")
-             
+         print(f"{self.namn} svingar sitt svärd mot {annan_karaktär}")
 
 
