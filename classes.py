@@ -53,8 +53,27 @@ class Ranger (Karaktar):
 class Warrior (Karaktar):
     def __init__(self, namn, hälsa, kraft):
           super().__init__(namn, hälsa=120, kraft=15)
-    def attack(self, annan_karaktär):
-         skada = self.kraft + 5 
-         print(f"{self.namn} svingar sitt svärd mot {annan_karaktär}")
+          self.stamina = 35
 
+
+    def attack(self, annan_karaktär):
+        skada = self.kraft + random.randint(-3, 4)
+        print(f"{self.namn} svingar sitt svärd mot {annan_karaktär}")
+        annan_karaktär.hälsa -= skada
+        if annan_karaktär.hälsa < 0:
+            annan_karaktär.hälsa = 0
+        print(f"{annan_karaktär.namn} har nu {annan_karaktär.hälsa} HP kvar.")
+    
+    def specialattack(self, annan_karaktär):
+        kostnad = 18 
+        if self.stamina < kostnad: 
+            print("f{self.namn} har inte nog stamina ({self.stamina}/{kostnad})!")
+            return
+        self.stamina -= kostnad 
+        skada = self.kraft * 2 + random.randint(5,10)
+        print(f"{self.namn} utför Crushing Blow mot {annan_karaktär.namn} för {skada} skada!")
+        if annan_karaktär.hälsa < 0:
+            annan_karaktär.hälsa = 0 
+            print(f"{annan_karaktär.namn} har nu {annan_karaktär.hälsa} HP kvar.")
+            
 
