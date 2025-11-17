@@ -1,7 +1,7 @@
 import random
 import time
 
-#superklass
+#superklass, arv
 class Karaktar:
     def __init__(self, namn, hälsa, kraft):
         self.namn = namn
@@ -18,16 +18,16 @@ class Karaktar:
     def är_vid_liv(self):
         return self.hälsa > 0
 
-#subklass, ranger
+#subklass, ranger, ärv
 class Ranger (Karaktar):
         def __init__ (self, namn):
             super().__init__(namn, hälsa=100, kraft=20)
-            self.energi = 40 
+            self.stamina = 40 
 
         def attack (self, annan_karaktär):
             krit_chans = random.randint(1, 6) #slump för kritisk träff
             krit = 2 if krit_chans == 6 else 1 
-            skada = self.attack * krit
+            skada = self.kraft * krit
             if krit == 2:
                 print(f"Kritisk träff av {self.namn}!")
             print(f"{self.namn} skjuter en pil mot {annan_karaktär.namn}!") 
@@ -38,10 +38,10 @@ class Ranger (Karaktar):
         
         def specialattack(self, annan_karaktär):
             kostnad = 15 
-            if self.energi < kostnad:
-                print(f"{self.namn} har inte nog med energi för specialattack!")
+            if self.stamina < kostnad:
+                print(f"{self.namn} har inte nog med stamina för specialattack!")
                 return
-            self.energi -= kostnad
+            self.stamina -= kostnad
             skada = self.kraft + random.randint(16, 25)
             print(f"{self.namn} använder Rain of Arrows på {annan_karaktär.namn} för {skada} skada!")
             annan_karaktär.hälsa -= skada
@@ -51,7 +51,7 @@ class Ranger (Karaktar):
 
 #subklass, krigare
 class Warrior (Karaktar):
-    def __init__(self, namn, hälsa, kraft):
+    def __init__(self, namn):
           super().__init__(namn, hälsa=120, kraft=15)
           self.stamina = 35
 
@@ -67,7 +67,7 @@ class Warrior (Karaktar):
     def specialattack(self, annan_karaktär):
         kostnad = 18 
         if self.stamina < kostnad: 
-            print("f{self.namn} har inte nog stamina ({self.stamina}/{kostnad})!")
+            print(f"{self.namn} har inte nog stamina ({self.stamina}/{kostnad})!")
             return
         self.stamina -= kostnad 
         skada = self.kraft * 2 + random.randint(5,10)
@@ -87,16 +87,16 @@ class Mage(Karaktar):
         annan_karaktär.hälsa -= skada
         if annan_karaktär.hälsa < 0:
             annan_karaktär.hälsa = 0 
-        print(f"{annan_karaktär.namn} har nu {annan_karaktär.häksa} HP kvar.")
+        print(f"{annan_karaktär.namn} har nu {annan_karaktär.hälsa} HP kvar.")
 
-class Arena:
+class Arena: #objekt/arena
     def __init__(self):
         self.kar1 = self.välj_karaktär(1)
         self.kar2 = self.välj_karaktär(2)
     
     def välj_karaktär(self, nummer):
         print(f"\nVälj karaktär #{nummer}:")
-        print("1) Ranger\n2) Warrior\n3 Mage")
+        print("1) Ranger\n2) Warrior\n3) Mage")
         while True:
             val = input("Skriv numret för din valda karaktär: ").strip()
             namn = input("Ge din karaktär ett namn: ").strip()
@@ -106,7 +106,7 @@ class Arena:
                 return Warrior(namn)
             elif val == "3":
                 return Mage(namn)
-    
+    #loop, attack & tur
     def starta_strid(self):
         print(f"Striden börjar mellan {self.kar1.namn} och {self.kar2.namn}")
         runda = 1 
@@ -116,8 +116,7 @@ class Arena:
             if not self.kar2.är_vid_liv():
                 print(f"{self.kar1.namn} vinnner kampen!")
                 break
-
-
+            
             self.tur(self.kar2, self.kar1)
             if not self.kar1.är_vid_liv():
                 print(f"{self.kar2.namn} vinner kampen!")
@@ -127,11 +126,11 @@ class Arena:
             time.sleep(0.7)
     
 
-    def tur(self, attacker, försvarare):
-        if hasattr(attacker, "specialattack") and random.choice([True, False]):
+    def tur(self, attacker, försvarare): #py.func bockar spatt.
+        if hasattr(attacker, "specialattack") and random.choice([True, False]): #villkor
             attacker.specialattack(försvarare)
         else: 
-            attacker.attack(försvarare)
+            attacker.attack(försvarare) #vanlig attack anropas
 
 if __name__ == "__main__":
     arena = Arena()
